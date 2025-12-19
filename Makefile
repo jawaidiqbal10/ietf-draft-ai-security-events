@@ -3,11 +3,11 @@ DRAFT = draft-iqbal-rosomakho-ai-security-events-00
 all: build
 
 build:
-kramdown-rfc $(DRAFT).md > $(DRAFT).xml
-xml2rfc $(DRAFT).xml --text --html
+	kramdown-rfc $(DRAFT).md > $(DRAFT).xml
+	xml2rfc $(DRAFT).xml --text --html
 
 validate:
-xml2rfc $(DRAFT).xml --v3 --strict
+	xml2rfc $(DRAFT).xml --v3 --strict
 
 clean:
-rm -f $(DRAFT).xml $(DRAFT).txt $(DRAFT).html
+	rm -f $(DRAFT).xml $(DRAFT).txt $(DRAFT).html
