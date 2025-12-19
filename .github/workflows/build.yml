@@ -1,0 +1,39 @@
+name: Build IETF Draft
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install kramdown-rfc
+        run: gem install kramdown-rfc
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install xml2rfc
+        run: pip install xml2rfc
+
+      - name: Build draft
+        run: make build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ietf-draft
+          path: |
+            draft-*.txt
+            draft-*.html
+            draft-*.xml
