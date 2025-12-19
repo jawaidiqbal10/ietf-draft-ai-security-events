@@ -29,7 +29,6 @@ The specification defines five security event categories: Discovery, Risk Assess
 The framework is protocol-agnostic, supporting multiple AI agent frameworks including the Model Context Protocol (MCP), LangChain, and others. It explicitly addresses diverse deployment patterns including direct client-server, gateway consolidation, embedded AI, autonomous agents, and multi-agent orchestration.
 
 
-
 # 1. Introduction
 
 ## 1.1 Problem Statement
