@@ -1,14 +1,19 @@
-# **Security Event Taxonomy for AI Agent Systems**
-
-***draft-iqbal-rosomakho-ai-security-events-00***
-
-Internet-Draft
-
-Intended status: Informational
-
-Expires: June 2026
-
-**December 19, 2025**
+---
+title: "Security Event Framework for AI Systems"
+abbrev: "AI Security Events"
+docname: draft-iqbal-rosomakho-ai-security-events-00
+category: info
+ipr: trust200902
+submissiontype: IETF
+area: Security
+stand_alone: yes
+keyword:
+  - AI
+  - Security Events
+  - Telemetry
+  - Logging
+  - AI Agents
+---
 
 # **Abstract**
 
