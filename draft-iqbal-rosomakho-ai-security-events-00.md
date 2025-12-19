@@ -24,13 +24,19 @@ author:
     organization: Zscaler
     email: yrosomakho@zscaler.com
 
+normative:
+  RFC2119:
+  RFC8174:
+
+informative:
+
 ---
 
 # Abstract
 
 This specification defines a comprehensive security event framework for monitoring AI agent systems, including agentic AI workflows, autonomous agent architectures, and tool-calling protocols. While motivated by the Model Context Protocol (MCP), the framework applies broadly to any AI system exhibiting agent-like behaviors, addressing critical gaps in traditional security monitoring through standardized event taxonomies, correlation schemas, and detection approaches specifically designed for AI-mediated data access and semantic transformation. The specification defines five security event categories: Discovery, Risk Assessment, Data Access, Policy Enforcement, and Semantic Data Lineage. Event schemas are designed as a domain-specific profile that complements existing security event standards (CEF, LEEF, OCSF) rather than replacing them, enabling integration with existing SIEM infrastructure while providing AI-specific semantics. The framework is protocol-agnostic, supporting multiple AI agent frameworks including the Model Context Protocol (MCP), LangChain, and others. It explicitly addresses diverse deployment patterns including direct client-server, gateway consolidation, embedded AI, autonomous agents, and multi-agent orchestration.
 
-# 1. Introduction
+# Introduction
 
 ## Problem Statement
 
@@ -98,7 +104,7 @@ Semantic lineage: Tracking how sensitive meaning propagates across AI transforma
 
 Shadow deployment: Unauthorized AI infrastructure operating without enterprise security oversight (e.g., personal Claude Desktop clients connecting to corporate MCP servers).
 
-# 2. Architecture Overview
+# Architecture Overview
 
 ## Event Flow Model
 
@@ -154,7 +160,7 @@ AI systems operating with minimal human supervision. Extended execution timefram
 
 Multiple AI agents collaborating on complex tasks. Agent-to-agent communication introduces lateral movement concerns. Emerging in advanced enterprise AI deployments. Security characteristic: Requires tracking information flow across agent boundaries.
 
-# 3. Event Taxonomy
+# Event Taxonomy
 
 This section defines the core event categories that comprise the AI agent security monitoring framework.
 
@@ -213,7 +219,7 @@ Event Types:
 
 Semantic Lineage events MUST include: transformation_type, meaning_preservation_score, source_data_classification, destination_classification
 
-# 4. Common Event Schema Elements
+# Common Event Schema Elements
 
 All events in this taxonomy MUST include the following core fields:
 
@@ -251,7 +257,7 @@ The correlation_id field specifically addresses the Split-Transaction Transfer M
 * data_categories: Types of data accessed (PII, financial, source_code, etc.)
 * regulatory_flags: Applicable compliance frameworks (GDPR, HIPAA, SOC2, etc.)
 
-# 5. Security Considerations
+# Security Considerations
 
 ## Privacy Protection
 
@@ -274,7 +280,7 @@ Implementations SHOULD employ multiple detection surfaces and regularly update s
 
 AI agent protocols predominantly use TLS 1.3 encryption. Implementations requiring deep inspection MUST implement TLS interception with appropriate user consent, certificate management, and privacy safeguards. Metadata-only detection is RECOMMENDED as a privacy-preserving alternative.
 
-# 6. IANA Considerations
+# IANA Considerations
 
 This document has no IANA actions.
 
