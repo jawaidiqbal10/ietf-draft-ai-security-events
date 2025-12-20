@@ -1,4 +1,6 @@
 ---
+coding: utf-8
+
 title: "Security Event Framework for AI Systems"
 abbrev: "AI Security Events"
 docname: draft-iqbal-rosomakho-ai-security-events-00
@@ -24,17 +26,18 @@ author:
     organization: Zscaler
     email: yrosomakho@zscaler.com
 
+
+
+
 normative:
   RFC2119:
   RFC8174:
 
-informative:
-
----
-
-# Abstract
+--- abstract
 
 This specification defines a comprehensive security event framework for monitoring AI agent systems, including agentic AI workflows, autonomous agent architectures, and tool-calling protocols. While motivated by the Model Context Protocol (MCP), the framework applies broadly to any AI system exhibiting agent-like behaviors, addressing critical gaps in traditional security monitoring through standardized event taxonomies, correlation schemas, and detection approaches specifically designed for AI-mediated data access and semantic transformation. The specification defines five security event categories: Discovery, Risk Assessment, Data Access, Policy Enforcement, and Semantic Data Lineage. Event schemas are designed as a domain-specific profile that complements existing security event standards (CEF, LEEF, OCSF) rather than replacing them, enabling integration with existing SIEM infrastructure while providing AI-specific semantics. The framework is protocol-agnostic, supporting multiple AI agent frameworks including the Model Context Protocol (MCP), LangChain, and others. It explicitly addresses diverse deployment patterns including direct client-server, gateway consolidation, embedded AI, autonomous agents, and multi-agent orchestration.
+
+--- middle
 
 # Introduction
 
@@ -283,6 +286,8 @@ AI agent protocols predominantly use TLS 1.3 encryption. Implementations requiri
 # IANA Considerations
 
 This document has no IANA actions.
+
+--- back
 
 # Appendix A. JSON Schema Examples
 
