@@ -236,7 +236,7 @@ All events in this taxonomy MUST include the following core fields:
 * parent_event_id: References causative event in chain
 * session_id: Groups events within single user session
 
-The correlation_id field specifically addresses the Split-Transaction Transfer Model by enabling implementations to link metadata-rich initiation events with payload-carrying transfer events.
+The correlation_id field specifically addresses the Split-Transaction Transfer Model by enabling implementations to link metadata-rich initiation events with payload-carrying transfer events. Implementations MUST use this field to correlate events across the decoupled transaction pattern described in Section 2.1.1.
 
 ## Temporal Fields
 
@@ -289,6 +289,8 @@ AI agent protocols predominantly use TLS 1.3 encryption. Implementations requiri
 # IANA Considerations
 
 This document has no IANA actions. Future versions may define an IANA registry for AI security event types and category identifiers.
+
+--- back
 
 # JSON Schema Examples
 
@@ -457,7 +459,7 @@ Single Signal Confidence: ~50-70%
 Multi-Signal (3+) Confidence: >95%
 Validated Approach: Correlate User-Agent + Temporal + Payload + Endpoint patterns
 
-Telemetry Source Effectiveness:
+Telemetry Source Effectiveness (signals marked HIGH achieve >95% confidence when combined):
 
 | Signal Type | Effectiveness | Production Coverage |
 |------------|---------------|---------------------|
