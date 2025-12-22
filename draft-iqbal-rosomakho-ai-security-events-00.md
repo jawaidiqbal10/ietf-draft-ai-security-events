@@ -111,7 +111,7 @@ Shadow deployment: Unauthorized AI infrastructure operating without enterprise s
 
 Security events in AI agent systems originate from multiple execution points. A generalized flow encompasses:
 
-User → AI agent → [gateway] → Tool server → Resource → AI model → Output → Destination
+User -> AI agent -> [gateway] -> Tool server -> Resource -> AI model -> Output -> Destination
 
 Each transition point represents a potential security event generation surface. Events flow to security controls (Endpoint, SSE) for analysis, correlation, and policy enforcement.
 
@@ -379,7 +379,7 @@ Total Transactions: 656 HTTP/HTTPS requests
 Users: 2 authenticated
 SSL Inspection: 90.7% coverage
 TLS Versions: TLS 1.3 (81%), TLS 1.2 (10%)
-Geographic Flow: Egypt (client) → United States (AI services)
+Geographic Flow: United States (client) -> United States (AI services)
 
 ## Detection Results Summary
 
@@ -391,7 +391,7 @@ Precision: 100% (63 true positives, 0 false positives)
 
 Shadow MCP Client Identified: Cursor IDE v2.2.23
 Data Exfiltrated: 57,324 bytes (56 KB) via file synchronization operations
-Cross-Border Transfer: Egypt → United States (potential GDPR/data residency implications)
+Data Transfer: United States -> United States (cloud AI services)
 Traditional DLP Coverage: File-oriented DLP controls did not generate violations for these uploads, despite 56 KB of source code being transmitted via API payloads
 
 ## Shadow MCP Client Signature Evidence
@@ -421,7 +421,7 @@ Four API calls within same second timestamp - impossible for human browser inter
 Payload Asymmetry: 18.37x request/response ratio
 Total uploaded: 57,324 bytes
 Total received: 3,120 bytes
-Pattern indicates: large context uploads → minimal AI acknowledgment responses
+Pattern indicates: large context uploads -> minimal AI acknowledgment responses
 Characteristic of code assistant workflows
 
 ## Semantic Data Exposure Evidence
@@ -447,7 +447,7 @@ NO file downloads (HTTP GET with file MIME types)
 NO file attachments
 NO cloud storage sync operations
 Data transmitted in HTTP POST bodies (gRPC-Web serialization)
-Traditional DLP verdict: ALLOWED (saw only "POST → 200 OK")
+Traditional DLP verdict: ALLOWED (saw only "POST -> 200 OK")
 Reality: 56 KB source code uploaded to third-party AI service
 
 Payload sizes (10-12 KB) and /filesyncservice/fsuploadfile endpoint consistent with source code files being transmitted to AI backend.
@@ -500,6 +500,6 @@ Single organization: Traffic from one enterprise deployment
 Limited duration: 28-minute observation window
 Known agent type: Cursor IDE; other AI agents may exhibit different signatures
 No false negative analysis: Ground truth not available for comparison
-Geographic specificity: Egypt-to-US flows; other regions may differ
+Geographic specificity: United States traffic flows; other regions may differ
 
 Despite these limitations, validation demonstrates the specification addresses an observable, real-world security gap with implementable detection methods.
