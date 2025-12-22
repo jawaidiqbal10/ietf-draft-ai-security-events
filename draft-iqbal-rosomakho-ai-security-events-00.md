@@ -1,4 +1,6 @@
 ---
+coding: utf-8
+
 title: "Security Event Framework for AI Systems"
 abbrev: "AI Security Events"
 docname: draft-iqbal-rosomakho-ai-security-events-00
@@ -13,7 +15,6 @@ keyword:
   - Telemetry
   - Logging
   - AI Agents
-
 author:
   - name: Jawaid Iqbal
     role: editor
@@ -23,18 +24,16 @@ author:
     role: editor
     organization: Zscaler
     email: yrosomakho@zscaler.com
-
 normative:
   RFC2119:
   RFC8174:
-
 informative:
 
----
-
-# Abstract
+--- abstract
 
 This specification defines a comprehensive security event framework for monitoring AI agent systems, including agentic AI workflows, autonomous agent architectures, and tool-calling protocols. While motivated by the Model Context Protocol (MCP), the framework applies broadly to any AI system exhibiting agent-like behaviors, addressing critical gaps in traditional security monitoring through standardized event taxonomies, correlation schemas, and detection approaches specifically designed for AI-mediated data access and semantic transformation. The specification defines five security event categories: Discovery, Risk Assessment, Data Access, Policy Enforcement, and Semantic Data Lineage. Event schemas are designed as a domain-specific profile that complements existing security event standards (CEF, LEEF, OCSF) rather than replacing them, enabling integration with existing SIEM infrastructure while providing AI-specific semantics. The framework is protocol-agnostic, supporting multiple AI agent frameworks including the Model Context Protocol (MCP), LangChain, and others. It explicitly addresses diverse deployment patterns including direct client-server, gateway consolidation, embedded AI, autonomous agents, and multi-agent orchestration.
+
+--- middle
 
 # Introduction
 
@@ -73,6 +72,8 @@ Use Case 2: Data Exfiltration Detection. Correlate Data Access and Semantic Line
 
 Use Case 3: Policy Compliance. Monitor Policy Enforcement events to ensure AI agents respect data classification policies, rate limits, and access controls, generating compliance audit trails for regulatory requirements.
 
+Use Case 4: Cross-Border Regulatory Exposure. Correlate network context and regulatory flags in Data Access events to identify when sensitive data crosses jurisdictional boundaries through AI agent operations, enabling GDPR, data residency, and export control compliance monitoring.
+
 ## Scope and Applicability
 
 This framework applies to:
@@ -82,7 +83,7 @@ This framework applies to:
 * Deployment patterns: Direct connections, gateway consolidation, embedded AI, autonomous agents, and multi-agent orchestration
 * Environment types: Browser extensions, desktop applications, cloud services, edge devices, and containerized infrastructure
 
-This specification does not cover general AI model training security, prompt injection detection, or AI output quality monitoring, which are addressed in separate standards.
+This specification does not cover general AI model training security, prompt injection detection, or AI output quality monitoring, which are addressed in separate standards. These domains MAY consume the event taxonomy defined here as input signals but are otherwise out of scope.
 
 ## Requirements Language
 
@@ -122,7 +123,7 @@ To accurately log AI data access, the event model MUST account for decoupled tra
 2. Authorization Event: The service returns a temporary access token or pre-signed URI.
 3. Transfer Event: The payload is transmitted to the authorized URI. This event carries the Binary Payload but often lacks the Semantic Context (due to the absence of authentication cookies or headers on the storage endpoint).
 
-This taxonomy introduces the correlation_id field (Section 4.1) specifically to allow implementations to link the Initiation Event with the Transfer Event, ensuring that the semantic meaning of the data remains attached to the binary transfer in the security log.
+This taxonomy introduces the correlation_id field (Section 4.1) specifically to allow implementations to link the Initiation Event with the Transfer Event, even when they traverse different protocols or endpoints, ensuring that the semantic meaning of the data remains attached to the binary transfer in the security log.
 
 ## Detection Surfaces
 
@@ -223,6 +224,11 @@ Semantic Lineage events MUST include: transformation_type, meaning_preservation_
 
 All events in this taxonomy MUST include the following core fields:
 
+## Event Classification
+
+* event_category: Event category, constrained to: discovery, risk_assessment, data_access, policy_enforcement, semantic_lineage
+* event_type: Specific event type within category (e.g., agent_discovered, data_transmitted, meaning_exfiltrated)
+
 ## Correlation Fields
 
 * event_id: Unique identifier for this event (UUID format)
@@ -254,7 +260,7 @@ The correlation_id field specifically addresses the Split-Transaction Transfer M
 ## Data Classification
 
 * data_sensitivity: Classification level (public, internal, confidential, restricted)
-* data_categories: Types of data accessed (PII, financial, source_code, etc.)
+* data_categories: Types of data accessed (PII, financial, source_code, etc.) - RECOMMENDED for data access events
 * regulatory_flags: Applicable compliance frameworks (GDPR, HIPAA, SOC2, etc.)
 
 # Security Considerations
@@ -265,7 +271,7 @@ Implementations MUST minimize collection of AI prompt content and model response
 
 ## False Positive Management
 
-Multi-signal fusion is RECOMMENDED to achieve >95% detection confidence. Single-signal detection typically achieves only 50-70% confidence. Implementations SHOULD correlate User-Agent analysis, temporal patterns, payload characteristics, and endpoint signatures.
+Multi-signal fusion SHOULD be used to achieve high detection confidence. Production validation in Appendix B demonstrates that single-signal detection typically achieves only 50-70% confidence, while multi-signal correlation (3+ signals) exceeds 95% confidence. Implementations SHOULD correlate User-Agent analysis, temporal patterns, payload characteristics, and endpoint signatures. No single detection surface provides complete visibility; combining multiple surfaces reduces both false positives and false negatives.
 
 ## Evasion Resistance
 
@@ -282,9 +288,9 @@ AI agent protocols predominantly use TLS 1.3 encryption. Implementations requiri
 
 # IANA Considerations
 
-This document has no IANA actions.
+This document has no IANA actions. Future versions may define an IANA registry for AI security event types and category identifiers.
 
-# Appendix A. JSON Schema Examples
+# JSON Schema Examples
 
 This appendix provides informative examples of event schemas in JSON format.
 
@@ -358,7 +364,7 @@ This appendix provides informative examples of event schemas in JSON format.
 }
 ~~~
 
-# Appendix B. Production Validation Evidence
+# Production Validation Evidence
 
 NOTE: This appendix is informative, not normative. It provides empirical validation of the event schemas and detection methods.
 
@@ -377,14 +383,14 @@ Geographic Flow: Egypt (client) → United States (AI services)
 
 Agent Activity Events Generated: 63
 Semantic Exposure Events Generated: 5
-Detection Rate: 100% (all agent traffic identified)
+Detection Rate: 100% within this 28-minute dataset
 False Positive Rate: 0% (no browser traffic misclassified)
 Precision: 100% (63 true positives, 0 false positives)
 
 Shadow MCP Client Identified: Cursor IDE v2.2.23
 Data Exfiltrated: 57,324 bytes (56 KB) via file synchronization operations
 Cross-Border Transfer: Egypt → United States (potential GDPR/data residency implications)
-Traditional DLP Bypass: Confirmed (zero violations flagged while 56 KB uploaded)
+Traditional DLP Coverage: File-oriented DLP controls did not generate violations for these uploads, despite 56 KB of source code being transmitted via API payloads
 
 ## Shadow MCP Client Signature Evidence
 
@@ -433,7 +439,8 @@ Method: POST
 User-Agent: Unknown(connect-es/1.6.1)
 Total: 57,324 bytes (56 KB)
 
-Traditional DLP Bypass Mechanism:
+Traditional DLP Coverage:
+File-oriented DLP controls did not generate violations for these uploads
 NO file downloads (HTTP GET with file MIME types)
 NO file attachments
 NO cloud storage sync operations
@@ -475,11 +482,11 @@ Assessment: COMPLIANT with privacy requirements. All detection via network metad
 
 1. Shadow MCP clients exist in production - Cursor IDE detected operating without governance oversight, generating 10.8% of observed traffic
 
-2. Network telemetry is sufficient - 100% detection accuracy using User-Agent + timing + endpoints + payloads; no cloud API integration required
+2. Network telemetry was sufficient in this dataset - 100% detection accuracy using User-Agent + timing + endpoints + payloads; no cloud API integration required
 
 3. Cloud-side governance has no visibility - Zero integration detected; Cursor operated independently of enterprise AI control planes
 
-4. Semantic exposure bypasses traditional DLP - 56 KB uploaded via API payloads invisible to file-based DLP systems
+4. Semantic exposure bypassed file-oriented DLP in this deployment - 56 KB uploaded via API payloads invisible to file-based DLP systems
 
 5. Event schemas are implementable - Valid JSON events successfully generated from real network transactions
 
