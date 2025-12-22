@@ -359,7 +359,7 @@ This appendix provides informative examples of event schemas in JSON format.
     "input_size_bytes": 524288,
     "output_size_bytes": 2048,
     "compression_ratio": 256.0,
-    "semantic_categories_preserved": ["financial_data", "business_strategy"]
+    "semantic_categories_preserved": ["financial_data"]
   }
 }
 ~~~
@@ -410,7 +410,7 @@ Temporal Pattern - Sub-Second Burst:
 ~~~
 08:04:34.000 UTC | POST | /dashboardservice/getteams (1,396 bytes)
 08:04:34.000 UTC | POST | /aiservice/checkfeaturesstatus (2,252 bytes)
-08:04:34.000 UTC | POST | /dashboardservice/getuserprivacymode (1,417 bytes)
+08:04:34.000 UTC | POST | /.../getuserprivacymode (1,417 bytes)
 08:04:34.000 UTC | POST | /aiservice/checknumberconfigs (1,908 bytes)
 ~~~
 
